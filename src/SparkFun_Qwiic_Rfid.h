@@ -74,11 +74,11 @@ class Qwiic_Rfid
 
     // This function gets all the available tags on teh Qwiic RFID Reader's buffer.
     // The buffer on the Qwiic RFID is 20 tags long or 200 bytes. 
-    StringgetAllTags(String tagArray[]);
+    String* getAllTags(String tagArray[]);
 
     // This function gets all the times associated with the available tags in the
     // buffer. 
-    floatgetAllTimes(float timeArray[]);
+    float* getAllTimes(float timeArray[]);
 
     // This function changes the I-squared-C address of the Qwiic RFID. The address
     // is written to the memory location in EEPROM that determines its address.

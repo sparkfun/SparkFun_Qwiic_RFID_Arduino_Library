@@ -41,7 +41,7 @@ String Qwiic_Rfid::getTag(){
   String tempTag; 
   _readTagTime(TAG_AND_TIME_REQUEST); // Load up the global struct variable
   tempTag = rfid.tag; // Assign the tag to our local variable
-  rfid.Tag = " "; // Clear the global variable
+  rfid.tag = " "; // Clear the global variable
   return tempTag; // Return the local variable. 
 
 }
@@ -108,7 +108,7 @@ String* Qwiic_Rfid::getAllTags(String tagArray[]){
     rfidArray.tag[i] = " "; // Clear global variable
   }
 
-  return tagArray
+  return tagArray;
 }
 
 // This function gets all the times associated with the available tags in the
@@ -117,7 +117,7 @@ float* Qwiic_Rfid::getAllTimes(float timeArray[]){
  
   for(uint8_t i = 0; i < (sizeof(timeArray)/4); i++){
     timeArray[i] = rfidArray.time[i]; //Load up passed array with time
-    rfidArray[i] = 0.0; // Clear global variable
+    rfidArray.time[i] = 0.0; // Clear global variable
   }
 
   return timeArray; 
@@ -132,8 +132,8 @@ bool Qwiic_Rfid::changeAddress(uint8_t newAddress)
         return; 
 
   _i2cPort->beginTransmission( _address);  
-  _i2cPort->Write(ADDRESS_LOCATION);  
-  _i2cPort->Write(newAddress);  
+  _i2cPort->write(ADDRESS_LOCATION);  
+  _i2cPort->write(newAddress);  
 
   if(!Wire.endTransmission())
     return false; 
@@ -149,22 +149,27 @@ void Qwiic_Rfid::_readTagTime(uint8_t _numofReads)
 {
 
   char _tempTag[TAG_SIZE]; 
-  float _tempTime; 
+  uint32_t _tempTime; 
 
   _i2cPort->requestFrom(_address, _numofReads); 
-  _tempTag[0] = char(Wire.read()); 
-  _tempTag[1] = char(Wire.read());
-  _tempTag[2] = char(Wire.read());
-  _tempTag[3] = char(Wire.read());
-  _tempTag[4] = char(Wire.read());
-  _tempTag[5] = char(Wire.read());
+  _tempTag[0] = char[](Wire.read()); 
+  _tempTag[1] = char[](Wire.read());
+  _tempTag[2] = char[](Wire.read());
+  _tempTag[3] = char[](Wire.read());
+  _tempTag[4] = char[](Wire.read());
+  _tempTag[5] = char[](Wire.read());
   _tempTag[6] = '\0';
+  Serial.println(_tempTag[1]);
+  Serial.println(_tempTag[2]);
+  Serial.println(_tempTag[3]);
+  Serial.println(_tempTag[4]);
+  Serial.println(_tempTag[5]);
   rfid.tag  = _tempTag; 
   
-  _tempTime  = uint32_t(Wire.read << 24); 
-  _tempTime |= uint32_t(Wire.read << 16); 
-  _tempTime |= uint32_t(Wire.read << 8); 
-  _tempTime |= uint32_t(Wire.read); 
+  _tempTime  = uint32_t(Wire.read() << 24); 
+  _tempTime |= uint32_t(Wire.read() << 16); 
+  _tempTime |= uint32_t(Wire.read() << 8); 
+  _tempTime |= uint32_t(Wire.read()); 
   rfid.time = _tempTime/1000; // Convert to seconds
   
 
@@ -176,7 +181,7 @@ void Qwiic_Rfid::_readAllTagsTimes(uint8_t _numofReads)
 {
 
   char _tempTag[TAG_SIZE]; 
-  float _tempTime; 
+  uint32_t _tempTime; 
 
   for(uint8_t i = 0; i < _numofReads; i++)
   {
@@ -190,10 +195,10 @@ void Qwiic_Rfid::_readAllTagsTimes(uint8_t _numofReads)
     _tempTag[6] = '\0';
     rfidArray.tag[i] = _tempTag; 
     
-    _tempTime = uint32_t(Wire.read << 24); 
-    _tempTime |= uint32_t(Wire.read << 16); 
-    _tempTime |= uint32_t(Wire.read << 8); 
-    _tempTime |= uint32_t(Wire.read); 
+    _tempTime = uint32_t(Wire.read() << 24); 
+    _tempTime |= uint32_t(Wire.read() << 16); 
+    _tempTime |= uint32_t(Wire.read() << 8); 
+    _tempTime |= uint32_t(Wire.read()); 
     rfidArray.time[i] = _tempTime/1000; // Convert to seconds
   } 
 
