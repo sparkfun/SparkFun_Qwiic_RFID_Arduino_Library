@@ -45,6 +45,7 @@ void setup()
   // Put the interrupt pin in a known HIGH state. 
   pinMode(intPin, INPUT_PULLUP); 
 }
+
 void loop()
 {
 

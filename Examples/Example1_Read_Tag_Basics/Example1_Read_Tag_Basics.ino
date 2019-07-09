@@ -36,11 +36,9 @@ void setup()
     Serial.println("Ready to scan some tags!"); 
   else
     Serial.println("Could not communicate with Qwiic RFID!"); 
-  
-  String tag = myRfid.getTag();
-  Serial.println(tag);
 
 }
+
 void loop()
 {
   if (Serial.available() > 0){
@@ -51,7 +49,6 @@ void loop()
       tag = myRfid.getTag();
       Serial.print("Tag ID: ");
       Serial.print(tag);
-      Serial.print(" : "); 
       scanTime = myRfid.getPrecReqTime(); 
       // If this time is too precise try: 
       // long time = myRfid.getReqTime(); 
