@@ -72,9 +72,9 @@ float Qwiic_Rfid::getPrecReqTime(){
 
   // Global struct variable is loaded from getTag function. There is no time
   // without a tag scan. 
-  float tempTime = _libRfid.time; // Assign the time to the local variable
+  float tempTime = float(_libRfid.time)/1000; // Assign the time to the local variable
   _libRfid.time = 0; // Clear the global variable
-  return tempTime/1000; // Return the local variable in seconds. 
+  return tempTime; // Return the local variable in seconds. 
 
 }
 
