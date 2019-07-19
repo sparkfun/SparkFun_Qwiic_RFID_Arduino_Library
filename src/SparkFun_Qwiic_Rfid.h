@@ -15,7 +15,7 @@
 struct rfidData {
 
   String tag; 
-  int32_t time; 
+  uint32_t time; 
 
 };
 
