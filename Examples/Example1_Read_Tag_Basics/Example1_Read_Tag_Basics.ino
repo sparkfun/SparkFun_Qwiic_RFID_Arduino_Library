@@ -53,7 +53,7 @@ void loop()
       // If this time is too precise try: 
       // long time = myRfid.getReqTime(); 
       Serial.print(" Scan Time: ");
-      Serial.print(scanTime);
+      Serial.println(scanTime);
 
     }
 
