@@ -44,6 +44,10 @@ void setup()
 
   // Put the interrupt pin in a known HIGH state. 
   pinMode(intPin, INPUT_PULLUP); 
+
+  // Want to clear tags sitting on the Qwiic RFID card?
+  //myRfid.clearTags();
+
 }
 
 void loop()

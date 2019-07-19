@@ -50,6 +50,10 @@ class Qwiic_Rfid
     // rfidData. 
     float getPrecReqTime();
 
+    // This function clear the buffer from the Qwiic RFID Reader by reading them
+    // but not storing them.
+    void clearTags();
+
     // This function gets all the available tags on teh Qwiic RFID Reader's buffer.
     // The buffer on the Qwiic RFID holds 20 tags and their scan time. Not knowing
     // how many are available until the i2c buffer is read, the parameter is 

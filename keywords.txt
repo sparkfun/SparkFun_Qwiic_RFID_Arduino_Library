@@ -18,6 +18,7 @@ getAllTags				KEYWORD2
 getAllTimes		KEYWORD2
 getAllPrecTimes				KEYWORD2
 changeAddress			KEYWORD2
+clearTags			KEYWORD2
 
 ###################################################################
 # Constants

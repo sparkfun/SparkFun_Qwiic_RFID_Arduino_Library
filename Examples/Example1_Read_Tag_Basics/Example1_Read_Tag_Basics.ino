@@ -37,6 +37,8 @@ void setup()
   else
     Serial.println("Could not communicate with Qwiic RFID!"); 
 
+  // Want to clear tags sitting on the Qwiic RFID card?
+  //myRfid.clearTags();
 }
 
 void loop()
