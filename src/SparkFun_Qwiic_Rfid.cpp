@@ -162,7 +162,7 @@ void Qwiic_Rfid::_readTagTime(uint8_t _numofReads)
   String _tempTag; 
   int32_t _tempTime; 
 
-  _i2cPort->requestFrom(_address, _numofReads); 
+  _i2cPort->requestFrom(_address, static_cast<uint8_t>(_numofReads)); 
   
   // What is read from the buffer is immediately converted to a string and
   // cocatenated onto the temporary variable.  
@@ -221,7 +221,7 @@ void Qwiic_Rfid::_readAllTagsTimes(uint8_t _numofReads)
     //
     // What is read from the buffer is immediately converted to a string and
     // cocatenated onto the temporary variable.  
-    _i2cPort->requestFrom(_address, TAG_AND_TIME_REQUEST); 
+    _i2cPort->requestFrom(_address, static_cast<uint8_t>(TAG_AND_TIME_REQUEST)); 
     _tempTag = String(_i2cPort->read());
     _tempTag += String(_i2cPort->read());
     _tempTag += String(_i2cPort->read());
