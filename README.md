@@ -1,9 +1,9 @@
 SparkFun Qwiic RFID Reader Arduino Library 
 ========================================
-[![SparkFun Qwiic RFID Reader](https://cdn.sparkfun.com/assets/parts/1/3/6/1/0/15191-SparkFun_RFID_Qwiic_Reader-01a.jpg)
+![SparkFun Qwiic RFID Reader](https://cdn.sparkfun.com/assets/parts/1/3/6/1/0/15191-SparkFun_RFID_Qwiic_Reader-01a.jpg)
 
 
-*SparkFun Qwiic RFID Reader (SEN-15191)*](https://www.sparkfun.com/products/15191)
+*[SparkFun Qwiic RFID Reader (SEN-15191)*](https://www.sparkfun.com/products/15191)
 
 The SparkFun Qwiic RFID Reader is a simple I<sup>2</sup>C based RFID Reader. 
 It can hold up to 20 unique RFID tag IDs and their scan times, while also
