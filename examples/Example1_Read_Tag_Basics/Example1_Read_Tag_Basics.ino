@@ -1,17 +1,18 @@
 /*
-	This example gets the latest tag scanned  and it's associated time from the 
-  Qwiic RFID Reader when the user enters "1" into the Serial Terminal. The
-  "scan" time is not the time of day the RFID card was scanned but rather the
-  time between when the card was scanned and when you the user requested the
-  RFID tag from the Qwiic RFID Reader. 
 
-	By: Elias Santistevan
-	Sparkfun Electronics
-	Date: December, 2023
-	License: This code is public domain but if you use this and we meet someday, get me a beer! 
+This example gets the latest tag scanned  and it's associated time from the 
+Qwiic RFID Reader when the user enters "1" into the Serial Terminal. The
+"scan" time is not the time of day the RFID card was scanned but rather the
+time between when the card was scanned and when you the user requested the
+RFID tag from the Qwiic RFID Reader. 
 
-	Feel like supporting our work? Buy a board from Sparkfun!
-	https://www.sparkfun.com/products/15191
+By: Elias Santistevan
+Sparkfun Electronics
+Date: December, 2023
+License: This code is public domain but if you use this and we meet someday, get me a beer! 
+
+Feel like supporting our work? Buy a board from Sparkfun!
+https://www.sparkfun.com/products/15191
 
 */
 
