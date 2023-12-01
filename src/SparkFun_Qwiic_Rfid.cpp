@@ -11,154 +11,121 @@
 
 #include "SparkFun_Qwiic_Rfid.h"
 
-Qwiic_Rfid::Qwiic_Rfid(uint8_t address) {
-  _address = address;
+Qwiic_Rfid::Qwiic_Rfid(uint8_t address)
+{
+    _address = address;
 } // Constructor for I2C
 
 bool Qwiic_Rfid::begin(TwoWire &wirePort) // Begin, but not Wire.begin() =).
 {
 
-  _i2cPort = &wirePort;
+    _i2cPort = &wirePort;
 
-  // Check for successful response: "O".
-  _i2cPort->beginTransmission(_address);
-  uint8_t _ret = _i2cPort->endTransmission();
-  if (!_ret)
-    return true;
-  else
-    return false;
+    // Check for successful response: "O".
+    _i2cPort->beginTransmission(_address);
+    uint8_t _ret = _i2cPort->endTransmission();
+    if (!_ret)
+        return true;
+    else
+        return false;
 }
 
-String Qwiic_Rfid::getTag() {
+String Qwiic_Rfid::getTag()
+{
 
-  // Call the read command that will fill the global struct variable: rfidData
-  _readTagTime(TAG_AND_TIME_REQUEST);
+    // Call the read command that will fill the global struct variable: rfidData
+    _readTagTime(TAG_AND_TIME_REQUEST);
 
-  String tempTag = _libRfid.tag; // Assign the tag to our local variable
-  _libRfid.tag = "";             // Clear the global variable
-  return tempTag;                // Return the local variable.
+    String tempTag = _libRfid.tag; // Assign the tag to our local variable
+    _libRfid.tag = "";             // Clear the global variable
+    return tempTag;                // Return the local variable.
 }
 
-int32_t Qwiic_Rfid::getReqTime() {
+int32_t Qwiic_Rfid::getReqTime()
+{
 
-  // Global struct variable is loaded from getTag function. There is no time
-  // without a tag scan.
-  int32_t tempTime = _libRfid.time; // Assign the time to the local variable
-  _libRfid.time = 0;                // Clear the global variable
-  return tempTime / 1000;           // Return the local variable in seconds.
+    // Global struct variable is loaded from getTag function. There is no time
+    // without a tag scan.
+    int32_t tempTime = _libRfid.time; // Assign the time to the local variable
+    _libRfid.time = 0;                // Clear the global variable
+    return tempTime / 1000;           // Return the local variable in seconds.
 }
 
-float Qwiic_Rfid::getPrecReqTime() {
+float Qwiic_Rfid::getPrecReqTime()
+{
 
-  // Global struct variable is loaded from getTag function. There is no time
-  // without a tag scan.
-  float tempTime =
-      float(_libRfid.time) / 1000; // Assign the time to the local variable
-  _libRfid.time = 0;               // Clear the global variable
-  return tempTime;                 // Return the local variable in seconds.
+    // Global struct variable is loaded from getTag function. There is no time
+    // without a tag scan.
+    float tempTime = float(_libRfid.time) / 1000; // Assign the time to the local variable
+    _libRfid.time = 0;                            // Clear the global variable
+    return tempTime;                              // Return the local variable in seconds.
 }
 
-void Qwiic_Rfid::clearTags() { _readAllTagsTimes(MAX_TAG_STORAGE); }
-
-void Qwiic_Rfid::getAllTags(String tagArray[MAX_TAG_STORAGE]) {
-
-  // Load up the global struct variables
-  _readAllTagsTimes(MAX_TAG_STORAGE);
-
-  for (uint8_t i = 0; i < MAX_TAG_STORAGE; i++) {
-    tagArray[i] = _libRfidArray[i].tag; // Load up passed array with tag
-    _libRfidArray[i].tag = "";          // Clear global variable
-  }
+void Qwiic_Rfid::clearTags()
+{
+    _readAllTagsTimes(MAX_TAG_STORAGE);
 }
 
-void Qwiic_Rfid::getAllTimes(int32_t timeArray[MAX_TAG_STORAGE]) {
+void Qwiic_Rfid::getAllTags(String tagArray[MAX_TAG_STORAGE])
+{
 
-  for (uint8_t i = 0; i < MAX_TAG_STORAGE; i++) {
-    timeArray[i] = (_libRfidArray[i].time /
-                    1000);     // Load up passed array with time in seconds
-    _libRfidArray[i].time = 0; // Clear global variable
-  }
+    // Load up the global struct variables
+    _readAllTagsTimes(MAX_TAG_STORAGE);
+
+    for (uint8_t i = 0; i < MAX_TAG_STORAGE; i++)
+    {
+        tagArray[i] = _libRfidArray[i].tag; // Load up passed array with tag
+        _libRfidArray[i].tag = "";          // Clear global variable
+    }
 }
 
-void Qwiic_Rfid::getAllPrecTimes(float timeArray[MAX_TAG_STORAGE]) {
+void Qwiic_Rfid::getAllTimes(int32_t timeArray[MAX_TAG_STORAGE])
+{
 
-  for (uint8_t i = 0; i < MAX_TAG_STORAGE; i++) {
-    timeArray[i] =
-        _libRfidArray[i].time; // Load up passed array with time in seconds
-    timeArray[i] = timeArray[i] / 1000;
-    _libRfidArray[i].time = 0; // Clear global variable
-  }
+    for (uint8_t i = 0; i < MAX_TAG_STORAGE; i++)
+    {
+        timeArray[i] = (_libRfidArray[i].time / 1000); // Load up passed array with time in seconds
+        _libRfidArray[i].time = 0;                     // Clear global variable
+    }
 }
 
-bool Qwiic_Rfid::changeAddress(uint8_t newAddress) {
+void Qwiic_Rfid::getAllPrecTimes(float timeArray[MAX_TAG_STORAGE])
+{
 
-  if (newAddress < 0x07 || newAddress > 0x78) // Range of legal addresses
-    return false;
-
-  _i2cPort->beginTransmission(_address);
-  _i2cPort->write(ADDRESS_LOCATION);
-  _i2cPort->write(newAddress);
-
-  if (!_i2cPort->endTransmission())
-    return true;
-  else
-    return false;
+    for (uint8_t i = 0; i < MAX_TAG_STORAGE; i++)
+    {
+        timeArray[i] = _libRfidArray[i].time; // Load up passed array with time in seconds
+        timeArray[i] = timeArray[i] / 1000;
+        _libRfidArray[i].time = 0; // Clear global variable
+    }
 }
 
-void Qwiic_Rfid::_readTagTime(uint8_t _numofReads) {
+bool Qwiic_Rfid::changeAddress(uint8_t newAddress)
+{
 
-  String _tempTag;
-  int32_t _tempTime;
+    if (newAddress < 0x07 || newAddress > 0x78) // Range of legal addresses
+        return false;
 
-  _i2cPort->requestFrom(_address, static_cast<uint8_t>(_numofReads));
+    _i2cPort->beginTransmission(_address);
+    _i2cPort->write(ADDRESS_LOCATION);
+    _i2cPort->write(newAddress);
 
-  // What is read from the buffer is immediately converted to a string and
-  // cocatenated onto the temporary variable.
-  _tempTag = String(_i2cPort->read());
-  _tempTag += String(_i2cPort->read());
-  _tempTag += String(_i2cPort->read());
-  _tempTag += String(_i2cPort->read());
-  _tempTag += String(_i2cPort->read());
-  _tempTag += String(_i2cPort->read());
-
-  // The tag is copied to the tag data member of the rfidData struct.
-  _libRfid.tag = _tempTag;
-
-  // Bring in the time.
-  if (_libRfid.tag == "000000") { // Blank tag.
-
-    // Time is zero if there is not a tag.
-    _tempTime = 0;
-
-    // Clear the buffer of the four bytes that would hold a time if there
-    // was a time to read.
-    _i2cPort->read();
-    _i2cPort->read();
-    _i2cPort->read();
-    _i2cPort->read();
-  }
-
-  else {
-    _tempTime = int32_t(_i2cPort->read() << 24);
-    _tempTime |= int32_t(_i2cPort->read() << 16);
-    _tempTime |= int32_t(_i2cPort->read() << 8);
-    _tempTime |= int32_t(_i2cPort->read());
-  }
-
-  // Time is copied to the time data member of the rfidData struct.
-  _libRfid.time = _tempTime; // Time in milliseconds
+    if (!_i2cPort->endTransmission())
+        return true;
+    else
+        return false;
 }
 
-void Qwiic_Rfid::_readAllTagsTimes(uint8_t _numofReads) {
+void Qwiic_Rfid::_readTagTime(uint8_t _numofReads)
+{
 
-  String _tempTag;
-  int32_t _tempTime;
+    String _tempTag;
+    int32_t _tempTime;
 
-  for (uint8_t i = 0; i < _numofReads; i++) {
-    //
+    _i2cPort->requestFrom(_address, static_cast<uint8_t>(_numofReads));
+
     // What is read from the buffer is immediately converted to a string and
     // cocatenated onto the temporary variable.
-    _i2cPort->requestFrom(_address, static_cast<uint8_t>(TAG_AND_TIME_REQUEST));
     _tempTag = String(_i2cPort->read());
     _tempTag += String(_i2cPort->read());
     _tempTag += String(_i2cPort->read());
@@ -167,30 +134,81 @@ void Qwiic_Rfid::_readAllTagsTimes(uint8_t _numofReads) {
     _tempTag += String(_i2cPort->read());
 
     // The tag is copied to the tag data member of the rfidData struct.
-    _libRfidArray[i].tag = _tempTag;
+    _libRfid.tag = _tempTag;
 
-    // Bring in the time but only if there is a tag.....
-    if (_libRfidArray[i].tag == "000000") { // Blank tag.
+    // Bring in the time.
+    if (_libRfid.tag == "000000")
+    { // Blank tag.
 
-      // Time is zero since there is not tag.
-      _tempTime = 0;
+        // Time is zero if there is not a tag.
+        _tempTime = 0;
 
-      // Clear the buffer...
-      _i2cPort->read();
-      _i2cPort->read();
-      _i2cPort->read();
-      _i2cPort->read();
+        // Clear the buffer of the four bytes that would hold a time if there
+        // was a time to read.
+        _i2cPort->read();
+        _i2cPort->read();
+        _i2cPort->read();
+        _i2cPort->read();
     }
 
-    else {
-      // If there is tag bring in the time.
-      _tempTime = int32_t(_i2cPort->read() << 24);
-      _tempTime |= int32_t(_i2cPort->read() << 16);
-      _tempTime |= int32_t(_i2cPort->read() << 8);
-      _tempTime |= int32_t(_i2cPort->read());
+    else
+    {
+        _tempTime = int32_t(_i2cPort->read() << 24);
+        _tempTime |= int32_t(_i2cPort->read() << 16);
+        _tempTime |= int32_t(_i2cPort->read() << 8);
+        _tempTime |= int32_t(_i2cPort->read());
     }
 
     // Time is copied to the time data member of the rfidData struct.
-    _libRfidArray[i].time = _tempTime; // Convert to seconds
-  }
+    _libRfid.time = _tempTime; // Time in milliseconds
+}
+
+void Qwiic_Rfid::_readAllTagsTimes(uint8_t _numofReads)
+{
+
+    String _tempTag;
+    int32_t _tempTime;
+
+    for (uint8_t i = 0; i < _numofReads; i++)
+    {
+        //
+        // What is read from the buffer is immediately converted to a string and
+        // cocatenated onto the temporary variable.
+        _i2cPort->requestFrom(_address, static_cast<uint8_t>(TAG_AND_TIME_REQUEST));
+        _tempTag = String(_i2cPort->read());
+        _tempTag += String(_i2cPort->read());
+        _tempTag += String(_i2cPort->read());
+        _tempTag += String(_i2cPort->read());
+        _tempTag += String(_i2cPort->read());
+        _tempTag += String(_i2cPort->read());
+
+        // The tag is copied to the tag data member of the rfidData struct.
+        _libRfidArray[i].tag = _tempTag;
+
+        // Bring in the time but only if there is a tag.....
+        if (_libRfidArray[i].tag == "000000")
+        { // Blank tag.
+
+            // Time is zero since there is not tag.
+            _tempTime = 0;
+
+            // Clear the buffer...
+            _i2cPort->read();
+            _i2cPort->read();
+            _i2cPort->read();
+            _i2cPort->read();
+        }
+
+        else
+        {
+            // If there is tag bring in the time.
+            _tempTime = int32_t(_i2cPort->read() << 24);
+            _tempTime |= int32_t(_i2cPort->read() << 16);
+            _tempTime |= int32_t(_i2cPort->read() << 8);
+            _tempTime |= int32_t(_i2cPort->read());
+        }
+
+        // Time is copied to the time data member of the rfidData struct.
+        _libRfidArray[i].time = _tempTime; // Convert to seconds
+    }
 }

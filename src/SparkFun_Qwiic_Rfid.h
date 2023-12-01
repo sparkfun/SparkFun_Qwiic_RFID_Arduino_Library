@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <Wire.h>
+#include <stdint.h>
 
 // #define DEFAULT_ADDR         0x7D
 // #define ALTERNATE_ADDR       0x7C
