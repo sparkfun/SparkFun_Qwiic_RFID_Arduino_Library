@@ -1,13 +1,3 @@
-/*
-  This library is for the SparkFun Qwiic RFID Card Reader. It provides functions
-  to retrieve RFID Card IDs that have been scanned by the Qwiic RFID Reader and
-  their times. By: Elias Santistevan Date: July 2019 License: This code is
-  public domain but you buy me a beer if you use this and we meet someday
-  (Beerware license).
-
-  Feel like supporting our work? Buy one from SparkFun Electronics!
-  https://www.sparkfun.com/products/15191
- */
 
 #include "SparkFun_Qwiic_Rfid.h"
 
@@ -24,10 +14,11 @@ bool Qwiic_Rfid::begin(TwoWire &wirePort) // Begin, but not Wire.begin() =).
     // Check for successful response: "O".
     _i2cPort->beginTransmission(_address);
     uint8_t _ret = _i2cPort->endTransmission();
-    if (!_ret)
-        return true;
-    else
+
+    if (_ret)
         return false;
+
+    return true;
 }
 
 String Qwiic_Rfid::getTag()
